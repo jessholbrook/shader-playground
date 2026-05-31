@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shader Playground</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <span class="brand">shaders</span>
+      <span class="hint">hover for details · drop or upload your own image on the photo cards</span>
+    </header>
+
+    <main>
+      <section class="card">
+        <figure class="fx">
+          <canvas
+            data-fx="imageDistortion"
+            data-src="https://picsum.photos/id/1025/1200/800"></canvas>
+        </figure>
+        <div class="info">
+          <h2>image distortion</h2>
+          <p>Hover and move your mouse — a ripple lens distorts the image with
+            chromatic aberration; scrolling adds energy.</p>
+          <code>src/shaders/imageDistortion.frag</code>
+        </div>
+      </section>
+
+      <section class="card">
+        <figure class="fx">
+          <canvas
+            data-fx="imageTransition"
+            data-from="https://picsum.photos/id/1015/1200/800"
+            data-to="https://picsum.photos/id/1039/1200/800"></canvas>
+        </figure>
+        <div class="info">
+          <h2>scroll transition</h2>
+          <p>Scroll the panel through the viewport — one image dissolves into
+            another along an organic noise front.</p>
+          <code>src/shaders/imageTransition.frag</code>
+        </div>
+      </section>
+
+      <section class="card">
+        <figure class="fx">
+          <canvas data-fx="scrollFlow"></canvas>
+        </figure>
+        <div class="info">
+          <h2>scroll flow</h2>
+          <p>A fractal-noise field. Scroll progress shifts its palette, scroll
+            velocity adds turbulence, the mouse pulls the flow.</p>
+          <code>src/shaders/scrollFlow.frag</code>
+        </div>
+      </section>
+
+      <section class="card">
+        <figure class="fx">
+          <canvas data-fx="starNest"></canvas>
+        </figure>
+        <div class="info">
+          <h2>star nest</h2>
+          <p>Volumetric starfield — move your mouse to rotate through it.
+            Original “Star Nest” by Pablo Román Andrioli (Kali), MIT-licensed,
+            ported from <a href="https://www.shadertoy.com/view/XlfGRj"
+              target="_blank" rel="noopener">Shadertoy</a>.</p>
+          <code>src/shaders/starNest.frag</code>
+        </div>
+      </section>
+
+      <section class="card">
+        <figure class="fx">
+          <canvas data-fx="tribulence"></canvas>
+        </figure>
+        <div class="info">
+          <h2>tribulence 3D</h2>
+          <p>A raymarched volumetric field warped by FM noise, drifting through
+            warped time. Original “Tribulence 3D” by chronos, ported from
+            <a href="https://www.shadertoy.com/view/fXj3WG"
+              target="_blank" rel="noopener">Shadertoy</a>.</p>
+          <code>src/shaders/tribulence.frag</code>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

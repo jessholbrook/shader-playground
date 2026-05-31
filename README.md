@@ -19,10 +19,10 @@ runs 100% client-side — no backend, no build step at runtime.
 
 | | |
 |---|---|
-| ![image distortion](docs/screenshots/image-distortion.png) **Image distortion** — a ripple lens distorts the image with chromatic aberration, following the mouse and energized by scroll velocity. | ![scroll transition](docs/screenshots/scroll-transition.png) **Scroll transition** — scrolling a card through the viewport dissolves one image into another along an organic noise front. |
-| ![scroll flow](docs/screenshots/scroll-flow.png) **Scroll flow** — a fractal-noise field whose palette shifts with scroll progress, turbulence rises with scroll velocity, and flow bends toward the mouse. | ![tribulence](docs/screenshots/tribulence.png) **Tribulence 3D** — a raymarched volumetric SDF warped by FM noise (WebGL2). *Ported from Shadertoy, by chronos.* |
+| ![image distortion](docs/image-distortion.gif) **Image distortion** — a ripple lens distorts the image with chromatic aberration, following the mouse and energized by scroll velocity. | ![scroll transition](docs/scroll-transition.gif) **Scroll transition** — scrolling a card through the viewport dissolves one image into another along an organic noise front. |
+| ![scroll flow](docs/scroll-flow.gif) **Scroll flow** — a fractal-noise field whose palette shifts with scroll progress, turbulence rises with scroll velocity, and flow bends toward the mouse. | ![tribulence](docs/hero.gif) **Tribulence 3D** — a raymarched volumetric SDF warped by FM noise (WebGL2). *Ported from Shadertoy, by chronos.* |
 
-![star nest](docs/screenshots/star-nest.png)
+![star nest](docs/star-nest.gif)
 
 **Star Nest** — a volumetric starfield you rotate with the mouse.
 *Ported from Shadertoy, by Pablo Román Andrioli (Kali), MIT.*

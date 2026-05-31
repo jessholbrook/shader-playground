@@ -1,5 +1,5 @@
 // Capture an animated shader embed to a looping GIF.
-// Usage: node scripts/make-gif.mjs <fx> <out.gif> [frames] [intervalMs] [w] [h]
+// Usage: node scripts/make-gif.mjs <fx> <out.gif> [frames] [intervalMs] [w] [h] [speed]
 // Build-time only (puppeteer-core / pngjs / gifenc installed with --no-save).
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
@@ -8,12 +8,13 @@ import { PNG } from 'pngjs'
 import gifenc from 'gifenc'
 const { GIFEncoder, quantize, applyPalette } = gifenc
 
-const [fx = 'tribulence', out = 'docs/hero.gif', framesN = 24, interval = 90, W = 480, H = 270] =
+const [fx = 'tribulence', out = 'docs/hero.gif', framesN = 24, interval = 90, W = 480, H = 270, spd = 1, cols = 256] =
   process.argv.slice(2)
 const frames = Number(framesN), iv = Number(interval), w = Number(W), h = Number(H)
+const speed = Number(spd), colors = Number(cols)
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-const URL = `http://localhost:5173/embed.html?fx=${fx}`
+const URL = `http://localhost:5173/embed.html?fx=${fx}&speed=${speed}`
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
@@ -41,7 +42,7 @@ const order = [...shots.keys(), ...[...shots.keys()].reverse().slice(1, -1)]
 const gif = GIFEncoder()
 for (const i of order) {
   const { data } = shots[i]
-  const palette = quantize(data, 256)
+  const palette = quantize(data, colors)
   const index = applyPalette(data, palette)
   gif.writeFrame(index, w, h, { palette, delay: 70 })
 }

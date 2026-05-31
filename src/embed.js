@@ -13,6 +13,7 @@ const factories = { imageDistortion, imageTransition, scrollFlow, starNest, trib
 
 const params = new URLSearchParams(location.search)
 const fx = params.get('fx') || 'starNest'
+const speed = parseFloat(params.get('speed')) || 1 // animation time scale (?speed=)
 const canvas = document.getElementById('gl')
 
 // image effects read their sources from data-* — fill from query params or defaults
@@ -41,7 +42,7 @@ if (animateMouse) {
 const start = performance.now()
 function frame() {
   const now = performance.now()
-  const t = (now - start) / 1000
+  const t = ((now - start) / 1000) * speed
   if (animateScroll) {
     input.scroll = 0.5 - 0.5 * Math.cos(t * 0.25) // 0 → 1 → 0
     input.scrollVel = 0.12 * Math.sin(t * 0.25)

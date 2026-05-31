@@ -9,7 +9,9 @@ shader hot-reload.
 **🔗 Live:** [shader-olive.vercel.app](https://shader-olive.vercel.app) · everything
 runs 100% client-side — no backend, no build step at runtime.
 
-![Star Nest](docs/screenshots/star-nest.png)
+![Tribulence 3D — live shader](docs/hero.gif)
+
+<sub>*Tribulence 3D running live in the browser — one of five effects below.*</sub>
 
 ---
 
@@ -20,7 +22,9 @@ runs 100% client-side — no backend, no build step at runtime.
 | ![image distortion](docs/screenshots/image-distortion.png) **Image distortion** — a ripple lens distorts the image with chromatic aberration, following the mouse and energized by scroll velocity. | ![scroll transition](docs/screenshots/scroll-transition.png) **Scroll transition** — scrolling a card through the viewport dissolves one image into another along an organic noise front. |
 | ![scroll flow](docs/screenshots/scroll-flow.png) **Scroll flow** — a fractal-noise field whose palette shifts with scroll progress, turbulence rises with scroll velocity, and flow bends toward the mouse. | ![tribulence](docs/screenshots/tribulence.png) **Tribulence 3D** — a raymarched volumetric SDF warped by FM noise (WebGL2). *Ported from Shadertoy, by chronos.* |
 
-Plus **Star Nest** (top) — a volumetric starfield you rotate with the mouse.
+![star nest](docs/screenshots/star-nest.png)
+
+**Star Nest** — a volumetric starfield you rotate with the mouse.
 *Ported from Shadertoy, by Pablo Román Andrioli (Kali), MIT.*
 
 ---
@@ -146,6 +150,14 @@ Static site — deploys anywhere. This one is on Vercel:
 ```bash
 npx vite build
 vercel deploy --prod
+```
+
+The demo GIF at the top is generated from the live shader with
+[`scripts/make-gif.mjs`](scripts/make-gif.mjs) (headless Chrome → frames → GIF):
+
+```bash
+npm run dev                                    # in one terminal
+npm run gif tribulence docs/hero.gif 24 90 480 270   # fx out frames intervalMs w h
 ```
 
 ---

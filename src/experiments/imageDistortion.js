@@ -3,6 +3,7 @@ import vertex from '../shaders/base.vert?raw'
 import fragment from '../shaders/imageDistortion.frag?raw'
 import { input } from '../lib/input.js'
 import { fitCanvas, inView, localMouse, DPR } from '../lib/card.js'
+import { loadInto } from '../lib/texture.js'
 
 // Mouse-reactive ripple + chromatic aberration over an image.
 // Each card owns its own canvas; the image url comes from data-src.
@@ -28,22 +29,16 @@ export function imageDistortion(canvas) {
   })
   const mesh = new Mesh(gl, { geometry, program })
 
-  // load an image (remote url or a local blob: url from an upload) into tMap
+  // load an image (remote url or a local blob: url from an upload) into tMap;
+  // a failed load falls back to the card's default image
   function setImage(src) {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.onload = () => {
-      texture.image = img
-      program.uniforms.uImageSize.value = [img.naturalWidth, img.naturalHeight]
-      if (src.startsWith('blob:')) URL.revokeObjectURL(src)
-    }
-    img.src = src
+    loadInto(src, texture, program.uniforms.uImageSize, canvas.dataset.src)
   }
   setImage(canvas.dataset.src)
 
   let hover = 0
 
-  function render(t) {
+  function render(t, dt = 1 / 60) {
     if (!inView(canvas)) return
     fitCanvas(renderer, canvas)
     program.uniforms.uPlaneSize.value = [renderer._w, renderer._h]
@@ -52,7 +47,8 @@ export function imageDistortion(canvas) {
 
     const m = localMouse(canvas, input.mouse)
     program.uniforms.uMouse.value = m.uv
-    hover += ((m.inside ? 1 : 0) - hover) * 0.08
+    // ease ~8%/frame at 60Hz, frame-rate independent
+    hover += ((m.inside ? 1 : 0) - hover) * (1 - Math.pow(0.92, dt * 60))
     program.uniforms.uHover.value = hover
 
     renderer.render({ scene: mesh })

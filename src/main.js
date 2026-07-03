@@ -26,12 +26,21 @@ const cards = [...document.querySelectorAll('canvas[data-fx]')].map((canvas) => 
   return card
 })
 
+// Respect prefers-reduced-motion: freeze shader time so every card renders
+// as a still. Scroll- and mouse-scrubbed responses stay (direct manipulation).
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+const FROZEN_T = 12 // an arbitrary moment that looks good on every effect
+
 // one shared render loop drives every card
 const start = performance.now()
+let last = start
 function frame() {
-  updateInput()
-  const t = (performance.now() - start) / 1000
-  for (const card of cards) card.render(t)
+  const now = performance.now()
+  const dt = Math.min((now - last) / 1000, 0.1) // clamp across tab switches
+  last = now
+  updateInput(dt)
+  const t = reducedMotion.matches ? FROZEN_T : (now - start) / 1000
+  for (const card of cards) card.render(t, dt)
   requestAnimationFrame(frame)
 }
 requestAnimationFrame(frame)

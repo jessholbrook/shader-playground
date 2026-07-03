@@ -16,9 +16,19 @@ export function fitCanvas(renderer, canvas) {
 }
 
 // Skip rendering cards that are well off-screen (saves GPU + battery).
-export function inView(canvas, margin = 200) {
-  const r = canvas.getBoundingClientRect()
-  return r.bottom > -margin && r.top < window.innerHeight + margin
+// Observer-based so the per-frame check is a map lookup, not a layout read.
+const visible = new WeakMap()
+const observer = new IntersectionObserver(
+  (entries) => { for (const e of entries) visible.set(e.target, e.isIntersecting) },
+  { rootMargin: '200px' },
+)
+
+export function inView(canvas) {
+  if (!visible.has(canvas)) {
+    visible.set(canvas, true) // render until the observer's first report
+    observer.observe(canvas)
+  }
+  return visible.get(canvas)
 }
 
 // 0 when the element's center sits at the bottom of the viewport,

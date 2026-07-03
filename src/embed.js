@@ -13,7 +13,9 @@ const factories = { imageDistortion, imageTransition, scrollFlow, starNest, trib
 
 const params = new URLSearchParams(location.search)
 const fx = params.get('fx') || 'starNest'
-const speed = parseFloat(params.get('speed')) || 1 // animation time scale (?speed=)
+// animation time scale (?speed=); 0 is a valid value and pauses the effect
+const rawSpeed = parseFloat(params.get('speed'))
+const speed = Number.isFinite(rawSpeed) ? rawSpeed : 1
 const canvas = document.getElementById('gl')
 
 // image effects read their sources from data-* — fill from query params or defaults
@@ -39,15 +41,19 @@ if (animateMouse) {
   window.addEventListener('mousemove', () => { userMovedAt = performance.now() }, { passive: true })
 }
 
+// freeze on ?speed=0 or prefers-reduced-motion: pick a good-looking still
+const frozen = speed === 0 || matchMedia('(prefers-reduced-motion: reduce)').matches
+if (frozen && animateScroll) input.scroll = 0.5 // hold mid-transition
+
 const start = performance.now()
 function frame() {
   const now = performance.now()
-  const t = ((now - start) / 1000) * speed
-  if (animateScroll) {
+  const t = frozen ? 12 : ((now - start) / 1000) * speed
+  if (!frozen && animateScroll) {
     input.scroll = 0.5 - 0.5 * Math.cos(t * 0.25) // 0 → 1 → 0
     input.scrollVel = 0.12 * Math.sin(t * 0.25)
   }
-  if (animateMouse && now - userMovedAt > 1500) {
+  if (!frozen && animateMouse && now - userMovedAt > 1500) {
     input.mouse = [0.5 + 0.22 * Math.cos(t * 0.7), 0.5 + 0.18 * Math.sin(t * 1.1)]
   }
   card.render(t)

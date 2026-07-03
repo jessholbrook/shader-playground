@@ -24,10 +24,12 @@ function onMouse(e) {
 
 window.addEventListener('scroll', onScroll, { passive: true })
 window.addEventListener('mousemove', onMouse, { passive: true })
+onScroll() // seed scroll progress: the page may load mid-scroll (anchor, restore)
 
-// Call once per frame to decay velocity toward zero.
-export function updateInput() {
-  // ease the reported velocity toward the raw value, then bleed the raw away
-  input.scrollVel += (rawVel - input.scrollVel) * 0.2
-  rawVel *= 0.85
+// Call once per frame to decay velocity toward zero. Easing rates are tuned
+// for 60Hz and rescaled by dt so 120Hz displays feel the same.
+export function updateInput(dt = 1 / 60) {
+  const f = dt * 60
+  input.scrollVel += (rawVel - input.scrollVel) * (1 - Math.pow(0.8, f))
+  rawVel *= Math.pow(0.85, f)
 }

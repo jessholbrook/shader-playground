@@ -1,6 +1,7 @@
 // Capture an animated shader embed to a looping GIF.
 // Usage: node scripts/make-gif.mjs <fx> <out.gif> [frames] [intervalMs] [w] [h] [speed]
-// Build-time only (puppeteer-core / pngjs / gifenc installed with --no-save).
+// Build-time only (puppeteer-core / pngjs / gifenc are devDependencies).
+// Needs the dev server running (npm run dev); CHROME_PATH overrides the browser.
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import puppeteer from 'puppeteer-core'
@@ -13,7 +14,7 @@ const [fx = 'tribulence', out = 'docs/hero.gif', framesN = 24, interval = 90, W 
 const frames = Number(framesN), iv = Number(interval), w = Number(W), h = Number(H)
 const speed = Number(spd), colors = Number(cols)
 
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const URL = `http://localhost:5173/embed.html?fx=${fx}&speed=${speed}`
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -44,7 +45,7 @@ for (const i of order) {
   const { data } = shots[i]
   const palette = quantize(data, colors)
   const index = applyPalette(data, palette)
-  gif.writeFrame(index, w, h, { palette, delay: 70 })
+  gif.writeFrame(index, w, h, { palette, delay: iv }) // play back at capture speed
 }
 gif.finish()
 

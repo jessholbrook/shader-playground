@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shader Playground</title>
+    <meta name="description" content="Scroll-reactive and image-distortion WebGL shader effects you can drop onto any web page. Runs 100% client-side." />
+    <meta property="og:title" content="Shader Playground" />
+    <meta property="og:description" content="Scroll-reactive and image-distortion WebGL shader effects you can drop onto any web page." />
+    <meta property="og:url" content="https://shader-olive.vercel.app" />
+    <meta property="og:image" content="https://shader-olive.vercel.app/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
@@ -17,7 +23,9 @@
         <figure class="fx">
           <canvas
             data-fx="imageDistortion"
-            data-src="https://picsum.photos/id/1025/1200/800"></canvas>
+            data-src="https://picsum.photos/id/1025/1200/800"
+            tabindex="0" role="img"
+            aria-label="Live shader: a ripple lens with chromatic aberration distorting a photo, following the mouse"></canvas>
         </figure>
         <div class="info">
           <h2>image distortion</h2>
@@ -32,7 +40,9 @@
           <canvas
             data-fx="imageTransition"
             data-from="https://picsum.photos/id/1015/1200/800"
-            data-to="https://picsum.photos/id/1039/1200/800"></canvas>
+            data-to="https://picsum.photos/id/1039/1200/800"
+            tabindex="0" role="img"
+            aria-label="Live shader: one photo dissolving into another along a noise front as the page scrolls"></canvas>
         </figure>
         <div class="info">
           <h2>scroll transition</h2>
@@ -44,7 +54,8 @@
 
       <section class="card">
         <figure class="fx">
-          <canvas data-fx="scrollFlow"></canvas>
+          <canvas data-fx="scrollFlow" tabindex="0" role="img"
+            aria-label="Live shader: a flowing fractal-noise field that shifts color with scroll"></canvas>
         </figure>
         <div class="info">
           <h2>scroll flow</h2>
@@ -56,7 +67,8 @@
 
       <section class="card">
         <figure class="fx">
-          <canvas data-fx="starNest"></canvas>
+          <canvas data-fx="starNest" tabindex="0" role="img"
+            aria-label="Live shader: a volumetric starfield that rotates with the mouse"></canvas>
         </figure>
         <div class="info">
           <h2>star nest</h2>
@@ -70,7 +82,8 @@
 
       <section class="card">
         <figure class="fx">
-          <canvas data-fx="tribulence"></canvas>
+          <canvas data-fx="tribulence" tabindex="0" role="img"
+            aria-label="Live shader: a raymarched volumetric field warped by noise, drifting through time"></canvas>
         </figure>
         <div class="info">
           <h2>tribulence 3D</h2>

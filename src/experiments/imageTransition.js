@@ -2,6 +2,7 @@ import { Renderer, Triangle, Program, Mesh, Texture } from 'ogl'
 import vertex from '../shaders/base.vert?raw'
 import fragment from '../shaders/imageTransition.frag?raw'
 import { fitCanvas, inView, viewportProgress, DPR } from '../lib/card.js'
+import { loadInto } from '../lib/texture.js'
 
 // Two images; scrolling the card through the viewport dissolves one into
 // the other. Image urls come from data-from / data-to.
@@ -33,21 +34,11 @@ export function imageTransition(canvas, opts = {}) {
   loadInto(canvas.dataset.from, tFrom, program.uniforms.uFromSize)
   loadInto(canvas.dataset.to, tTo, program.uniforms.uToSize)
 
-  function loadInto(src, tex, sizeUniform) {
-    const im = new Image()
-    im.crossOrigin = 'anonymous'
-    im.onload = () => {
-      tex.image = im
-      sizeUniform.value = [im.naturalWidth, im.naturalHeight]
-      if (src.startsWith('blob:')) URL.revokeObjectURL(src)
-    }
-    im.src = src
-  }
-
-  // swap either image live: slot 'from' or 'to' (remote url or local blob:)
+  // swap either image live: slot 'from' or 'to' (remote url or local blob:);
+  // a failed load falls back to the card's default for that slot
   function setImage(slot, src) {
-    if (slot === 'to') loadInto(src, tTo, program.uniforms.uToSize)
-    else loadInto(src, tFrom, program.uniforms.uFromSize)
+    if (slot === 'to') loadInto(src, tTo, program.uniforms.uToSize, canvas.dataset.to)
+    else loadInto(src, tFrom, program.uniforms.uFromSize, canvas.dataset.from)
   }
 
   function render(t) {

@@ -58,6 +58,7 @@ chrome-less shader chosen by a query param — drop it into any page with an ifr
 
 - **`?fx=`** — `imageDistortion` · `imageTransition` · `scrollFlow` · `starNest` · `tribulence`
 - **Custom images** — `?fx=imageDistortion&src=…` · `?fx=imageTransition&from=…&to=…`
+- **`?speed=`** — animation time scale; `?speed=0` renders a paused still
 - Scroll-driven effects (`scrollFlow`, `imageTransition`) **auto-animate** since an
   embed has no page scroll; `imageDistortion` **auto-roams** its ripple until you
   move the mouse. See [`src/embed.js`](src/embed.js).
@@ -128,8 +129,9 @@ fragment shader.
 
 ### Adding a card
 1. Add `src/shaders/myThing.frag`.
-2. Add `src/experiments/myThing.js` exporting `(canvas) => ({ render(t) })` that
-   creates its own `Renderer({ canvas })`.
+2. Add `src/experiments/myThing.js` exporting `(canvas) => ({ render(t, dt) })`
+   that creates its own `Renderer({ canvas })` (`dt` is the frame delta in
+   seconds — use it for any easing so 120Hz displays behave like 60Hz).
 3. Register it in the `factories` map in `src/main.js`.
 4. Add a `<section class="card">` with `<canvas data-fx="myThing">` in `index.html`.
 
@@ -145,10 +147,10 @@ and prefix the fragment shader with `#version 300 es` (see `tribulence.frag`).
 
 ## Deploy
 
-Static site — deploys anywhere. This one is on Vercel:
+Static site — deploys anywhere. This one is on Vercel, which builds it
+server-side (local `dist/` output is excluded by `.vercelignore`):
 
 ```bash
-npx vite build
 vercel deploy --prod
 ```
 
@@ -165,7 +167,8 @@ npm run gif tribulence docs/hero.gif 24 90 480 270   # fx out frames intervalMs 
 ## Credits & licensing
 
 The harness, the original effects (image distortion, scroll transition, scroll
-flow), and the embed/upload tooling are the author's own.
+flow), and the embed/upload tooling are the author's own, released under the
+[MIT License](LICENSE).
 
 Two effects are **ports of third-party Shadertoy shaders**, used with attribution.
 Each keeps its original author + license in the `.frag` header and links back to
